@@ -2,9 +2,11 @@ import asyncio
 import logging
 from aiogram import Dispatcher, Bot
 from aiogram.fsm.storage.redis import Redis, RedisStorage
+from sqlalchemy import text
 
 import handlers
 from config_data.config import ConfigEnv, load_config
+from database.database import engine, Base
 from keybords.main_menu import set_main_menu
 
 # Инициализируем логгер
@@ -29,15 +31,15 @@ async def main():
     # Выводим в консоль информацию о начале запуска бота
     logger.info('Starting bot')
     #
-    # # Проверяем соединение с PostgreSQL
-    # async with async_engine.connect() as conn:
-    #     res = await conn.execute(text('SELECT VERSION()'))
-    #     logger.info(f'Starting {res.first()[0]}')
-    #
-    # # Создание таблиц
-    # async with async_engine.begin() as conn:
-    #     # await conn.run_sync(Base.metadata.drop_all)
-    #     await conn.run_sync(Base.metadata.create_all)
+    # Проверяем соединение с PostgreSQL
+    async with engine.connect() as conn:
+        res = await conn.execute(text('SELECT VERSION()'))
+        logger.info(f'Starting {res.first()[0]}')
+
+    # Создание таблиц
+    async with engine.begin() as conn:
+        # await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
     dp = Dispatcher(bot=bot, storage=storage)
 
