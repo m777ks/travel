@@ -34,7 +34,7 @@ class FSMFillForm(StatesGroup):
     account_name = State()
 
 
-@router.message(CommandStart())
+@router.message(CommandStart(), (lambda message: message.chat.type == 'private'))
 async def process_start(message: Message, state: FSMContext):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
@@ -55,7 +55,7 @@ async def process_start(message: Message, state: FSMContext):
     await message.answer(text='MENU', reply_markup=kb)
 
 
-@router.message(Command(commands='profile'))
+@router.message(Command(commands='profile'), (lambda message: message.chat.type == 'private'))
 async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
@@ -66,7 +66,7 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
     await profile_user(message.from_user.id, user_name, bot)
 
 
-@router.callback_query((F.data == 'profile'))
+@router.callback_query((F.data == 'profile'), (lambda message: message.chat.type == 'private'))
 async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
@@ -291,7 +291,7 @@ async def process_deposit_completed(callback: CallbackQuery, bot: Bot, state: FS
 """ ESCROW """
 
 
-@router.message(Command(commands='escrow'))
+@router.message(Command(commands='escrow'), (lambda message: message.chat.type == 'private'))
 async def process_escrow_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
@@ -874,7 +874,7 @@ async def confirm_payment(callback: CallbackQuery, bot: Bot):
 """ choose accounts """
 
 
-@router.message(Command(commands='accounts'))
+@router.message(Command(commands='accounts'), (lambda message: message.chat.type == 'private'))
 async def process_choose_accounts(message: Message, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
