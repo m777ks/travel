@@ -90,7 +90,8 @@ async def send_accounts(bot: Bot, user_id: int):
         'IHG',
         'Virgin Atlantic',
         'Southwest',
-        'Emirates'
+        'Emirates',
+        'BA',
     ]
     buttons = []
     for button_name in buttons_lis:

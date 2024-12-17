@@ -901,6 +901,7 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
     accounts_data = {
         "Latam air": [
             "180k with cash | 150$",
+            "30k with email | 20$",
             "5k with email | 5$"
         ],
         "Azul air": [
@@ -923,6 +924,9 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
         "Emirates": [
             "10k | 15$",
             "8k family with email | 10$"
+        ],
+        "BA": [
+            "with email 17k | 15$",
         ]
     }
 
