@@ -535,6 +535,8 @@ async def handle_user_search(message: Message, state: FSMContext):
                 f'👤User fullname: <b>{user.name}</b>\n'
                 f'✅Username: <b>@{user.user_name}</b>\n'
                 f'👁️ID: <b>{user_id}</b>\n'
+                f'🛒Purchase: <b>{user.purchase}</b>\n'
+                f'💰Purchase amount: <b>{user.purchase_amount}</b>\n'
                 f'⭐Rating: <b>{round(user.rating, 1)}</b>\n'
             )
             await state.update_data(deal_with_username=user.user_name,
@@ -555,7 +557,9 @@ async def handle_user_search(message: Message, state: FSMContext):
             text_msg = (
                 f'👤 User fullname: <b>{user.name}</b>\n'
                 f'✅ Username: <b>@{username}</b>\n'
-                f'👁️ ID: <b>{user.id}</b>\n'
+                f'👁️ ID: <b>{user.id}</b>\n'                
+                f'🛒Purchase: <b>{user.purchase}</b>\n'
+                f'💰Purchase amount: <b>{user.purchase_amount}</b>\n'
                 f'⭐ Rating: <b>{round(user.rating, 1)}</b>\n'
             )
             await state.update_data(deal_with_username=user.user_name,
@@ -978,7 +982,7 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
     user_info = f"👁️ ID: {callback.from_user.id},\n✅ Username: @{callback.from_user.username or 'No username'}"
     await bot.send_message(
         chat_id=admin_id,
-        text=f"User {user_info} Selected: {selected_product}",
+        text=f"👤 User\n{user_info}\n\nSelected:\n{product_text}\n{selected_product}",
         reply_markup=markup
     )
 
