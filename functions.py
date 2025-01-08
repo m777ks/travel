@@ -65,6 +65,22 @@ async def sender_admin(bot: Bot, text: str, amount: str, username: str, fullname
     await bot.send_message(chat_id=config.tg_bot.admin, text=text_msg, reply_markup=kb, parse_mode='html')
     await bot.send_message(chat_id=717150843, text=text_msg, reply_markup=kb, parse_mode='html')
 
+async def sender_admin_account(bot: Bot, text: str, amount: str, username: str, fullname: str, user_id: int):
+    text_msg = (
+        f'📛 <b>{text}</b>\n'
+        f'👤User fullname: <b>{fullname}</b>\n'
+        f'✅Username: <b>@{username}</b>\n'
+        f'👁️ID: <b>{user_id}</b>\n'
+        f'💰Playment: <b>{amount}</b> USDT\n'
+    )
+    confirm = InlineKeyboardButton(
+        text='Confirm',
+        callback_data=f'payacc:{user_id}:{amount}'
+    )
+    kb = InlineKeyboardMarkup(inline_keyboard=[[confirm]])
+    await bot.send_message(chat_id=config.tg_bot.admin, text=text_msg, reply_markup=kb, parse_mode='html')
+    await bot.send_message(chat_id=717150843, text=text_msg, reply_markup=kb, parse_mode='html')
+
 
 async def escrow_window(bot: Bot, user_id: int):
 

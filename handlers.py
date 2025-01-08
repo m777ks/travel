@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from decimal import Decimal
+import re
 
 from aiogram import Router, Bot, F
 from aiogram.filters import CommandStart, StateFilter, Command
@@ -12,7 +13,7 @@ from aiogram.fsm.state import StatesGroup, State, default_state
 from config_data.config import ConfigEnv, load_config
 from database.databaseORM import DataBase
 from database.models import DealStatus
-from functions import profile_user, sender_admin, escrow_window, check_throttle, send_accounts
+from functions import profile_user, sender_admin, escrow_window, check_throttle, send_accounts, sender_admin_account
 from keybords.keybords import create_deals_keyboard, create_deals_all_keyboard
 
 config: ConfigEnv = load_config()
@@ -66,7 +67,7 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
     await profile_user(message.from_user.id, user_name, bot)
 
 
-@router.callback_query((F.data == 'profile'), (lambda message: message.chat.type == 'private'))
+@router.callback_query((F.data == 'profile'), (lambda callback: callback.message.chat.type == 'private'))
 async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
@@ -879,18 +880,22 @@ async def confirm_payment(callback: CallbackQuery, bot: Bot):
 
 
 @router.message(Command(commands='accounts'), (lambda message: message.chat.type == 'private'))
-async def process_choose_accounts(message: Message, bot: Bot):
+async def process_choose_accounts(message: Message, bot: Bot, state: FSMContext):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+
+    await state.clear()
     await message.delete()
+
     user_id = message.from_user.id
     await send_accounts(bot, user_id)
 
 
-@router.callback_query(F.data == 'accounts')
-async def process_accounts(callback: CallbackQuery, bot: Bot):
+@router.callback_query((F.data == 'accounts'), (lambda callback: callback.message.chat.type == 'private'))
+async def process_accounts(callback: CallbackQuery, bot: Bot, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+    await state.clear()
     await callback.message.delete()
     user_id = callback.from_user.id
     await send_accounts(bot, user_id)
@@ -966,6 +971,12 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
 async def process_product_selection(callback: CallbackQuery, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+
+    # Регулярное выражение для поиска цены в формате "число$"
+    match = re.search(r'\| (\d+)\$', callback.data)
+
+    price = int(match.group(1))  # Получаем совпадение
+
     await callback.message.delete()
     product_text = callback.message.text
     selected_product = callback.data.split('_')[1]
@@ -975,10 +986,28 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
     await callback.message.answer(
         "Thanks for choosing! The administrator will contact you shortly. ✅"
     )
+    await asyncio.sleep(1)
+    messages = (f'<code>TMPZ28h4GWpAnxJiE3Vq5G8dbRPncxJ9mU</code>\nTRC20 network\n\n'
+                f'{selected_product}\n\n'
+                f'After replenishment, click on the "Completed" button\n'
+                f'To return to the "Back" accounts')
+
+    completed = InlineKeyboardButton(
+        text='Completed',
+        callback_data=f'bayacc_completed_{price}'
+    )
+    back_profile = InlineKeyboardButton(
+        text='Back',
+        callback_data='accounts'
+    )
+    kb = InlineKeyboardMarkup(inline_keyboard=[[back_profile, completed]])
+
+    await callback.message.answer(text=messages, reply_markup=kb, parse_mode='html')
+
     write = InlineKeyboardButton(text='Profile', url=f"tg://user?id={user_id}")
     markup = InlineKeyboardMarkup(inline_keyboard=[[write]])
     # Уведомляем админа
-    admin_id = config.tg_bot.admin  # Замените на ID вашего администратора
+    admin_id = config.tg_bot.admin
     user_info = f"👁️ ID: {callback.from_user.id},\n✅ Username: @{callback.from_user.username or 'No username'}"
     await bot.send_message(
         chat_id=admin_id,
@@ -994,3 +1023,43 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
 
     # Подтверждаем callback
     await callback.answer("✅ Your choice is registered!")
+
+@router.callback_query(lambda c: c.data.startswith('bayacc_'))
+async def process_bay_acc(callback: CallbackQuery, bot: Bot):
+    if await check_throttle(callback.from_user.id, callback.data):
+        return  # Если пользователь в режиме троттлинга, завершить обработку
+    await callback.message.delete()
+    username = callback.from_user.username
+    fullname = callback.from_user.full_name
+    user_id = callback.from_user.id
+    text = 'Pay account'
+    amount = callback.data.split('_')[2]
+
+    await sender_admin_account(bot, text, amount, username, fullname, user_id)
+
+    text = '“The deposit has been successfully completed ✅ \nthis may take up to 24 hours ✅”'
+    message_del = await callback.message.answer(text=text)
+    await asyncio.sleep(10)
+    await message_del.delete()
+
+@router.callback_query(lambda c: c.data.startswith("payacc:"))
+async def confirm_payment_account(callback: CallbackQuery, bot: Bot):
+    if await check_throttle(callback.from_user.id, callback.data):
+        return  # Если пользователь в режиме троттлинга, завершить обработку
+
+    # Извлекаем данные из callback_data
+    _, user_id, amount = callback.data.split(":")
+    user_id = int(user_id)
+    amount = float(amount)
+
+    # Изменяем баланс пользователя
+    # await DataBase.update_user_balance_add(user_id, amount)
+
+    # Уведомляем администратора и пользователя
+    await callback.answer("Balance updated successfully!", show_alert=True)
+    await callback.message.delete()
+    await bot.send_message(
+        chat_id=user_id,
+        text=f"💰 Your balance has been updated by {amount:.2f} USDT.",
+        parse_mode="html"
+    )
