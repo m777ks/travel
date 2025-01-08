@@ -909,7 +909,7 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
     # Определяем данные для каждой категории
     accounts_data = {
         "Latam air": [
-            "180k with cash | 150$",
+            "200k with cash | 150$",
             "30k with email | 20$",
             "5k with email | 5$"
         ],
