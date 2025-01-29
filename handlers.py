@@ -40,7 +40,7 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    chat_member = await bot.get_chat_member(chat_id=-1002481038462, user_id=message.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
