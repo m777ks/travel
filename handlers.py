@@ -45,7 +45,7 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
     if user_status not in ['member', 'administrator', 'creator']:
-        await message.answer('you must be subscribed to discountravel broker chat to access bot')
+        await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     user_name = message.from_user.username or "NO_username"
     name = message.from_user.full_name or "NO_name"
@@ -67,7 +67,13 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
 async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
 
+    # Достаем статус пользователя
+    user_status = chat_member.status.split('.')[-1]
+    if user_status not in ['member', 'administrator', 'creator']:
+        await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
+        return
     await state.clear()
     await message.delete()
     user_name = message.from_user.username or "NO_username"
@@ -78,7 +84,13 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
 async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=callback.from_user.id)
 
+    # Достаем статус пользователя
+    user_status = chat_member.status.split('.')[-1]
+    if user_status not in ['member', 'administrator', 'creator']:
+        await callback.message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
+        return
     await state.clear()
     await callback.message.delete()
     user_name = callback.from_user.username or "NO_username"
@@ -303,7 +315,13 @@ async def process_deposit_completed(callback: CallbackQuery, bot: Bot, state: FS
 async def process_escrow_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
 
+    # Достаем статус пользователя
+    user_status = chat_member.status.split('.')[-1]
+    if user_status not in ['member', 'administrator', 'creator']:
+        await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
+        return
     await state.clear()
     await message.delete()
     await escrow_window(bot, message.from_user.id)
@@ -890,7 +908,13 @@ async def confirm_payment(callback: CallbackQuery, bot: Bot):
 async def process_choose_accounts(message: Message, bot: Bot, state: FSMContext):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
+    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
 
+    # Достаем статус пользователя
+    user_status = chat_member.status.split('.')[-1]
+    if user_status not in ['member', 'administrator', 'creator']:
+        await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
+        return
     await state.clear()
     await message.delete()
 
