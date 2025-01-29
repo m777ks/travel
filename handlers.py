@@ -36,10 +36,17 @@ class FSMFillForm(StatesGroup):
 
 
 @router.message(CommandStart(), (lambda message: message.chat.type == 'private'))
-async def process_start(message: Message, state: FSMContext):
+async def process_start(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
+    chat_member = await bot.get_chat_member(chat_id=-1002481038462, user_id=message.from_user.id)
+
+    # Достаем статус пользователя
+    user_status = chat_member.status.split('.')[-1]
+    if user_status not in ['member', 'administrator', 'creator']:
+        await message.answer('you must be subscribed to discountravel broker chat to access bot')
+        return
     user_name = message.from_user.username or "NO_username"
     name = message.from_user.full_name or "NO_name"
     await DataBase.insert_user(user_id=message.from_user.id, user_name=user_name, name=name)
