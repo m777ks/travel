@@ -968,6 +968,15 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
         "BA": [
             "with email 17k | 15$",
             "26k plus voucher flight for 1 person with email | 40$"
+        ],
+        "AA": [
+            "15k with email | 15$"
+        ],
+        "Choice priviledge hotels": [
+            "14k with email | 15$"
+        ],
+        "Singapore air": [
+            "13k with email: 15$"
         ]
     }
 
