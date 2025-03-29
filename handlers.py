@@ -976,7 +976,15 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
             "14k with email | 15$"
         ],
         "Singapore air": [
-            "13k with email: 15$"
+            "13k with email: 15$",
+            "19k with email 25$"
+        ],
+        "Virgin Velocity": [
+            "6k with email 10$"
+        ],
+        "Hawaiian airlines": [
+            "64k with email 40$",
+            "10k with email 10$"
         ]
     }
 
