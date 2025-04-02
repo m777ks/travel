@@ -112,7 +112,8 @@ async def send_accounts(bot: Bot, user_id: int):
         'Choice priviledge hotels',
         'Singapore air',
         'Virgin Velocity',
-        'Hawaiian airlines'
+        'Hawaiian airlines',
+        'United airlines'
     ]
     buttons = []
     for button_name in buttons_lis:
