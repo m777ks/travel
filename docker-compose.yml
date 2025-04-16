@@ -30,7 +30,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    entrypoint: ["bot"]
     env_file:
       - .env
     environment:
