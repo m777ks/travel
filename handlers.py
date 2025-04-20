@@ -33,14 +33,14 @@ class FSMFillForm(StatesGroup):
     terms_deal = State()
     amount_deal = State()
     account_name = State()
-
+CHAT_ID = -1002300500323
 
 @router.message(CommandStart(), (lambda message: message.chat.type == 'private'))
 async def process_start(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=CHAT_ID, user_id=message.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
@@ -67,7 +67,7 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
 async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=CHAT_ID, user_id=message.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
@@ -84,7 +84,7 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
 async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=callback.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=CHAT_ID, user_id=callback.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
@@ -315,7 +315,7 @@ async def process_deposit_completed(callback: CallbackQuery, bot: Bot, state: FS
 async def process_escrow_msg(message: Message, state: FSMContext, bot: Bot):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=CHAT_ID, user_id=message.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
@@ -908,7 +908,7 @@ async def confirm_payment(callback: CallbackQuery, bot: Bot):
 async def process_choose_accounts(message: Message, bot: Bot, state: FSMContext):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    chat_member = await bot.get_chat_member(chat_id=-1002256591082, user_id=message.from_user.id)
+    chat_member = await bot.get_chat_member(chat_id=CHAT_ID, user_id=message.from_user.id)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
