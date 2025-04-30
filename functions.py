@@ -113,7 +113,7 @@ async def send_accounts(bot: Bot, user_id: int):
         'Singapore air',
         'Virgin Velocity',
         'Hawaiian airlines',
-        'United airlines'
+        'United airlines',
         'Tap Air Portugal'
     ]
     buttons = []
