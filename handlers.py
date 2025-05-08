@@ -45,7 +45,7 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
     user_name = message.from_user.username or "NO_username"
-    print(f'USER: {message.from_user.id}, USER_NAME: {user_name}, STATUS: {user_status}')
+    logger.info(f'USER: {message.from_user.id}, USER_NAME: {user_name}, STATUS: {user_status}')
     if user_status not in ['member', 'administrator', 'creator']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
