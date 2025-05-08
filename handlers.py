@@ -44,10 +44,12 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
+    user_name = message.from_user.username or "NO_username"
+    print(f'USER: {message.from_user.id}, USER_NAME: {user_name}, STATUS: {user_status}')
     if user_status not in ['member', 'administrator', 'creator']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
-    user_name = message.from_user.username or "NO_username"
+
     name = message.from_user.full_name or "NO_name"
     await DataBase.insert_user(user_id=message.from_user.id, user_name=user_name, name=name)
     await state.clear()
