@@ -321,7 +321,7 @@ async def process_escrow_msg(message: Message, state: FSMContext, bot: Bot):
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
-    if user_status not in ['member', 'administrator', 'creator']:
+    if user_status not in ['member', 'administrator', 'creator', 'restricted']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
@@ -914,7 +914,7 @@ async def process_choose_accounts(message: Message, bot: Bot, state: FSMContext)
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
-    if user_status not in ['member', 'administrator', 'creator']:
+    if user_status not in ['member', 'administrator', 'creator', 'restricted']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
