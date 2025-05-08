@@ -46,7 +46,7 @@ async def process_start(message: Message, state: FSMContext, bot: Bot):
     user_status = chat_member.status.split('.')[-1]
     user_name = message.from_user.username or "NO_username"
     logger.info(f'USER: {message.from_user.id}, USER_NAME: {user_name}, STATUS: {user_status}')
-    if user_status not in ['member', 'administrator', 'creator']:
+    if user_status not in ['member', 'administrator', 'creator', 'restricted']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
 
@@ -73,7 +73,7 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
-    if user_status not in ['member', 'administrator', 'creator']:
+    if user_status not in ['member', 'administrator', 'creator', 'restricted']:
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
@@ -90,7 +90,7 @@ async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
 
     # Достаем статус пользователя
     user_status = chat_member.status.split('.')[-1]
-    if user_status not in ['member', 'administrator', 'creator']:
+    if user_status not in ['member', 'administrator', 'creator', 'restricted']:
         await callback.message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
