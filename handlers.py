@@ -260,9 +260,19 @@ async def process_deposit_address(message: Message, state: FSMContext):
     await message.delete()
 
     await state.update_data(amount=message.text)
-    messages = ('<code>TMPZ28h4GWpAnxJiE3Vq5G8dbRPncxJ9mU</code>\nTRC20 network\n'
-                'After replenishment, click on the "Completed" button\n'
-                'To return to the "Back" profile')
+    messages = (
+        "<b>💰 Replenishment Addresses</b>\n\n"
+        "<b>USDT (TRC20)</b>\n"
+        "<code>TMPZ28h4GWpAnxJiE3Vq5G8dbRPncxJ9mU</code>\n\n"
+        "<b>LTC (Litecoin)</b>\n"
+        "<code>LMvZ7JBsD7pGruHp2yd8h6s7sEU9QFg4Wa</code>\n\n"
+        "<b>BTC (Bitcoin)</b>\n"
+        "<code>1GvCKpKrgvSgBMQKanSewXxkBtUJsWmTvm</code>\n\n"
+        "<b>TON</b>\n"
+        "<code>UQCKk4uGB7d2gF9n4bgFsyrLEacbdTN7rbSbI7mAZ9yJqtjh</code>\n\n"
+        "After making the deposit, click the <b>“Completed”</b> button.\n"
+        "To go back, press the <b>“Back”</b> button in your profile."
+    )
 
     completed = InlineKeyboardButton(
         text='Completed',
