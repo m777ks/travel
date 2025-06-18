@@ -996,7 +996,8 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
         ],
         "Virgin Velocity": [
             "6k with email | 10$",
-            "7k with email | 10$"
+            "7k with email | 10$",
+            "11k with email | 15$"
         ],
         "Hawaiian airlines": [
             "64k with email | 40$",
@@ -1004,6 +1005,12 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
         ],
         "Tap Air Portugal": [
             "62k | 45$"
+        ],
+        "Iberia": [
+            "25k with email 40$",
+        ],
+        "Turkish Airlines": [
+            "28k with email 30$"
         ]
     }
 
