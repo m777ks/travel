@@ -980,11 +980,11 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
             "8k family with email | 10$"
         ],
         "BA": [
-            "with email 17k | 15$",
-            "26k plus voucher flight for 1 person with email | 40$"
+            # "with email 17k | 15$",
+            # "26k plus voucher flight for 1 person with email | 40$"
         ],
         "AA": [
-            "15k with email | 15$"
+            # "15k with email | 15$"
         ],
         "Choice priviledge hotels": [
             "14k with email | 15$",
@@ -995,22 +995,26 @@ async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
             "19k with email | 25$"
         ],
         "Virgin Velocity": [
-            "6k with email | 10$",
-            "7k with email | 10$",
-            "11k with email | 15$"
+            # "6k with email | 10$",
+            # "7k with email | 10$",
+            # "11k with email | 15$"
         ],
         "Hawaiian airlines": [
             "64k with email | 40$",
             "10k with email | 10$"
         ],
         "Tap Air Portugal": [
-            "62k | 45$"
+            # "62k | 45$"
         ],
         "Iberia": [
             "25k with email 40$",
         ],
         "Turkish Airlines": [
             "28k with email 30$"
+        ],
+        "Hilton": [
+            "Hilton 11k with email 10$",
+            "Hilton 23k with email 10$"
         ]
     }
 
