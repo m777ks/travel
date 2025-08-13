@@ -263,7 +263,7 @@ async def process_deposit_address(message: Message, state: FSMContext):
     messages = (
         "<b>💰 Replenishment Addresses</b>\n\n"
         "<b>USDT (TRC20)</b>\n"
-        "<code>TMPZ28h4GWpAnxJiE3Vq5G8dbRPncxJ9mU</code>\n\n"
+        "<code>TEfwkJFDXAspWn3x3KWQSsbS5wHEPjm6HM</code>\n\n"
         "<b>LTC (Litecoin)</b>\n"
         "<code>LMvZ7JBsD7pGruHp2yd8h6s7sEU9QFg4Wa</code>\n\n"
         "<b>BTC (Bitcoin)</b>\n"
@@ -1065,7 +1065,7 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
         "Thanks for choosing! The administrator will contact you shortly. ✅"
     )
     await asyncio.sleep(1)
-    messages = (f'<code>TMPZ28h4GWpAnxJiE3Vq5G8dbRPncxJ9mU</code>\nTRC20 network\n\n'
+    messages = (f'<code>TEfwkJFDXAspWn3x3KWQSsbS5wHEPjm6HM</code>\nTRC20 network\n\n'
                 f'{selected_product}\n\n'
                 f'After replenishment, click on the "Completed" button\n'
                 f'To return to the "Back" accounts')
