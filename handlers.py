@@ -511,8 +511,8 @@ async def process_deal_info(callback: CallbackQuery):
         f"🔄 <b>Status:</b> {deal['status'].value}\n\n"
 
         f"🕒 <b>Created at:</b> {deal['created_at'].strftime('%Y-%m-%d %H:%M:%S')}\n"
-        f"💼 <b>Seller:</b> @{deal['initiator_name'] or deal['initiator_fullname']}\n"
-        f"🛒 <b>Buyer:</b> @{deal['partner_name'] or deal['partner_fullname']}\n"
+        f"💼 <b>Seller:</b> @{deal['partner_name'] or deal['partner_fullname']}\n"
+        f"🛒 <b>Buyer:</b> @{deal['initiator_name'] or deal['initiator_fullname']}\n"
     )
     close = InlineKeyboardButton(
         text='Close',
