@@ -267,7 +267,7 @@ async def process_deposit_address(message: Message, state: FSMContext):
         "<b>LTC (Litecoin)</b>\n"
         "<code>LMvZ7JBsD7pGruHp2yd8h6s7sEU9QFg4Wa</code>\n\n"
         "<b>BTC (Bitcoin)</b>\n"
-        "<code>bc1qze0c45deel0vlaels2ckresmhnsehzlz7zsqm9</code>\n\n"
+        "<code>bc1qtu3e5jng2wucsw9uzquen038kggxv32980d6u0</code>\n\n"
         "<b>TON</b>\n"
         "<code>UQCKk4uGB7d2gF9n4bgFsyrLEacbdTN7rbSbI7mAZ9yJqtjh</code>\n\n"
         "After making the deposit, click the <b>“Completed”</b> button.\n"
