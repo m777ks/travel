@@ -77,7 +77,10 @@ async def process_profile_msg(message: Message, state: FSMContext, bot: Bot):
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
-    await message.delete()
+    try:
+        await message.delete()
+    except:
+        pass
     user_name = message.from_user.username or "NO_username"
     await profile_user(message.from_user.id, user_name, bot)
 
@@ -94,7 +97,11 @@ async def process_profile(callback: CallbackQuery, state: FSMContext, bot: Bot):
         await callback.message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
-    await callback.message.delete()
+
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_name = callback.from_user.username or "NO_username"
     await profile_user(callback.from_user.id, user_name, bot)
 
@@ -104,7 +111,10 @@ async def process_withdraw(callback: CallbackQuery):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_id = callback.from_user.id
     user = await DataBase.get_user_by_id(user_id)
     balance = user.balance
@@ -132,7 +142,10 @@ async def process_continue_withdraw(callback: CallbackQuery, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
 
     message = 'Enter the amount in USDT TRC20'
 
@@ -145,7 +158,10 @@ async def process_continue_withdraw_address(message: Message, state: FSMContext)
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await message.delete()
+    try:
+        await message.delete()
+    except:
+        pass
     await state.update_data(amount=message.text)
     user = await DataBase.get_user_by_id(user_id=message.from_user.id)
     balance = user.balance
@@ -163,7 +179,11 @@ async def process_continue_withdraw_address(message: Message, state: FSMContext)
 
 @router.message(StateFilter(FSMFillForm.state_amount))
 async def process_continue_withdraw_error(message: Message):
-    await message.delete()
+
+    try:
+        await message.delete()
+    except:
+        pass
     messages = 'Enter the amount in USDT TRC20'
 
     await message.answer(text=messages)
@@ -205,7 +225,10 @@ async def withdraw_confirm(callback: CallbackQuery, state: FSMContext, bot: Bot)
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_dict = await state.get_data()
     await state.clear()
 
@@ -245,7 +268,10 @@ async def process_deposit(callback: CallbackQuery, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     message = 'Enter the amount in USDT TRC20'
 
     await callback.message.answer(text=message)
@@ -257,7 +283,10 @@ async def process_deposit_address(message: Message, state: FSMContext):
     if await check_throttle(message.from_user.id, message.text):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await message.delete()
+    try:
+        await message.delete()
+    except:
+        pass
 
     await state.update_data(amount=message.text)
     messages = (
@@ -289,8 +318,10 @@ async def process_deposit_address(message: Message, state: FSMContext):
 
 @router.message(StateFilter(FSMFillForm.state_amount_deposit))
 async def process_deposit_error(message: Message):
-    await message.delete()
-
+    try:
+        await message.delete()
+    except:
+        pass
     messages = 'Enter the amount in USDT'
 
     await message.answer(text=messages)
@@ -301,8 +332,10 @@ async def process_deposit_completed(callback: CallbackQuery, bot: Bot, state: FS
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
-
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_dict = await state.get_data()
     amount = user_dict.get('amount')
     username = callback.from_user.username
@@ -315,7 +348,10 @@ async def process_deposit_completed(callback: CallbackQuery, bot: Bot, state: FS
     text = '“The deposit has been successfully completed ✅ \nthis may take up to 24 hours ✅”'
     message_del = await callback.message.answer(text=text)
     await asyncio.sleep(10)
-    await message_del.delete()
+    try:
+        await message_del.delete()
+    except:
+        pass
 
     await state.clear()
 
@@ -335,7 +371,11 @@ async def process_escrow_msg(message: Message, state: FSMContext, bot: Bot):
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
-    await message.delete()
+
+    try:
+        await message.delete()
+    except:
+        pass
     await escrow_window(bot, message.from_user.id)
 
 
@@ -345,7 +385,10 @@ async def process_escrow(callback: CallbackQuery, state: FSMContext, bot: Bot):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
     await state.clear()
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     await escrow_window(bot, callback.from_user.id)
 
 
@@ -354,7 +397,10 @@ async def deals_categories(callback: CallbackQuery):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     status_count = await DataBase.get_deals_count_by_status(callback.from_user.id)
     text = '🤝My deals\n\n👉Select a deal category:'
     in_progress = InlineKeyboardButton(
@@ -528,7 +574,10 @@ async def process_close(callback: CallbackQuery):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
 
 
 """ OPEN DEAL"""
@@ -539,7 +588,11 @@ async def process_open_deal(callback: CallbackQuery, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
+
     text = 'Find user by "@username" or ID'
     await callback.message.answer(text)
     await state.set_state(FSMFillForm.state_user)
@@ -581,7 +634,10 @@ async def handle_user_search(message: Message, state: FSMContext):
                                     deal_with_id=user_id)
             await message.answer(text=text_msg, reply_markup=kb, parse_mode='html')
         else:
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
             text_msg = '👀 User not found. Please try again'
             await message.answer(text_msg)
 
@@ -604,7 +660,10 @@ async def handle_user_search(message: Message, state: FSMContext):
                                     deal_with_id=user.id)
             await message.answer(text=text_msg, reply_markup=kb, parse_mode='html')
         else:
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
             text_msg = '👀 User not found. Please try again'
             await message.answer(text_msg)
 
@@ -619,7 +678,10 @@ async def process_make_deal(callback: CallbackQuery, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_dict = await state.get_data()
     deal_with_username = user_dict.get('deal_with_username')
     deal_with_id = user_dict.get('deal_with_id')
@@ -750,7 +812,10 @@ async def process_accept(callback: CallbackQuery, state: FSMContext, bot: Bot):
 
     """ Добавить запрос к диллеру """
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_dict = await state.get_data()
     deal_with_username = user_dict.get('deal_with_username')
     deal_with_id = user_dict.get('deal_with_id')
@@ -793,7 +858,10 @@ async def process_deal_status(callback: CallbackQuery, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     _, deal_id, status = callback.data.split(':')
     deal_id = int(deal_id)
 
@@ -838,8 +906,10 @@ async def release_funds(callback: CallbackQuery, bot: Bot):
     _, deal_id = callback.data.split(':')
     deal_id = int(deal_id)
 
-    await callback.message.delete()
-
+    try:
+        await callback.message.delete()
+    except:
+        pass
     text_msg = f"👏 Congratulations on a successful transaction ✅"
     await callback.message.answer(text_msg, parse_mode='html')
 
@@ -882,7 +952,10 @@ async def process_rate(callback: CallbackQuery):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     _, rating, user_id, deal_id = callback.data.split(':')
     rating = int(rating)
     user_id = int(user_id)
@@ -905,7 +978,11 @@ async def confirm_payment(callback: CallbackQuery, bot: Bot):
 
     # Уведомляем администратора и пользователя
     await callback.answer("Balance updated successfully!", show_alert=True)
-    await callback.message.delete()
+
+    try:
+        await callback.message.delete()
+    except:
+        pass
     await bot.send_message(
         chat_id=user_id,
         text=f"💰 Your balance has been updated by {amount:.2f} USDT.",
@@ -928,7 +1005,11 @@ async def process_choose_accounts(message: Message, bot: Bot, state: FSMContext)
         await message.answer('you must be subscribed to discountravel chat to access bot, contact admin @Yacobovitz')
         return
     await state.clear()
-    await message.delete()
+
+    try:
+        await message.delete()
+    except:
+        pass
 
     user_id = message.from_user.id
     await send_accounts(bot, user_id)
@@ -939,7 +1020,11 @@ async def process_accounts(callback: CallbackQuery, bot: Bot, state: FSMContext)
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
     await state.clear()
-    await callback.message.delete()
+
+    try:
+        await callback.message.delete()
+    except:
+        pass
     user_id = callback.from_user.id
     await send_accounts(bot, user_id)
 
@@ -948,7 +1033,10 @@ async def process_accounts(callback: CallbackQuery, bot: Bot, state: FSMContext)
 async def process_account_buttons(callback: CallbackQuery, state: FSMContext):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     # Определяем данные для каждой категории
     accounts_data = {
         "Latam air": [
@@ -1055,7 +1143,10 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
 
     price = int(match.group(1))  # Получаем совпадение
 
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     product_text = callback.message.text
     selected_product = callback.data.split('_')[1]
     user_id = callback.from_user.id
@@ -1106,7 +1197,10 @@ async def process_product_selection(callback: CallbackQuery, bot: Bot):
 async def process_bay_acc(callback: CallbackQuery, bot: Bot):
     if await check_throttle(callback.from_user.id, callback.data):
         return  # Если пользователь в режиме троттлинга, завершить обработку
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     username = callback.from_user.username
     fullname = callback.from_user.full_name
     user_id = callback.from_user.id
@@ -1135,7 +1229,10 @@ async def confirm_payment_account(callback: CallbackQuery, bot: Bot):
 
     # Уведомляем администратора и пользователя
     await callback.answer("Balance updated successfully!", show_alert=True)
-    await callback.message.delete()
+    try:
+        await callback.message.delete()
+    except:
+        pass
     await bot.send_message(
         chat_id=user_id,
         text=f"💰 Your balance has been updated by {amount:.2f} USDT.",
